@@ -182,7 +182,7 @@ function animateVisibleCards(){
 }
 function update(withBurst=true, withAnim=true){
   const pv=perView(); let pages=getPages(pv);
-  if(cur>=pages) cur=pages-1; if(cur<0) cur=0;
+  if(pages>0){ cur = ((cur % pages) + pages) % pages; }
   const gap=22; const cw=(vp.clientWidth - gap*(pv-1))/pv;
   document.querySelectorAll('.card-story').forEach((c,i)=>{
     c.style.width=cw+'px'; const isActive = i>=cur*pv && i<(cur+1)*pv; c.classList.toggle('active',isActive);
@@ -213,7 +213,7 @@ function triggerStarBurst(){
 }
 function goTo(i, withBurst=true, withAnim=true){
   const pv=perView(); const pages=getPages(pv);
-  const next=Math.max(0,Math.min(i,pages-1));
+  const next = ((i % pages) + pages) % pages; // loop infinite
   if(next!==cur && withBurst) triggerStarBurst();
   cur=next; if(dotsBox.children.length!==pages) buildDots(pv);
   update(withBurst, withAnim);
