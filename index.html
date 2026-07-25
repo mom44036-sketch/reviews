@@ -10,11 +10,14 @@
 :root{--navy:#0f2a4d;--navy2:#122e5a;--red:#e55a5a;--green:#ffb729;--gray:#8a99b1;--light:#f8fafc;}
 body{font-family:'Tajawal',sans-serif;background:#fff;color:var(--navy);overflow-x:hidden;}
 .section{max-width:1350px;margin:0 auto;padding:72px 20px;position:relative;}
-.title{font-weight:800;font-size:clamp(28px,3.5vw,40px);color:var(--navy);line-height:1.25;}
-.sub{color:var(--gray);font-size:clamp(14px,1.5vw,16px);margin-top:10px;}
+.title{font-weight:800;font-size:clamp(28px,3.5vw,40px);color:var(--navy);line-height:1.25;text-align:right !important;}
+.sub{color:var(--gray);font-size:clamp(14px,1.5vw,16px);margin-top:10px;text-align:right !important;width:100%;}
 .badge-story{border:1px solid #e6eaf0;border-radius:999px;padding:10px 18px;background:#fff;display:inline-flex;align-items:center;gap:10px;font-size:14px;font-weight:700;color:var(--navy);box-shadow:0 2px 10px rgba(15,42,77,.05);}
-.viewport{overflow:hidden;position:relative;padding-bottom:20px;}
+.viewport{overflow:hidden;position:relative;padding-bottom:20px;cursor:grab;touch-action:pan-y;user-select:none;-webkit-user-select:none;}
+.viewport.dragging{cursor:grabbing;}
+.viewport.dragging .card-story{pointer-events:none;}
 .track{display:flex;gap:22px;transition:transform.7s cubic-bezier(.22,1,.36,1);will-change:transform;}
+.track.dragging{transition:none !important;}
 .card-story{background:#fff;border:1px solid #eef2f7;border-radius:22px;padding:24px 22px 20px;box-shadow:0 10px 30px rgba(15,42,77,.05);flex-shrink:0;min-height:340px;display:flex;flex-direction:column;position:relative;overflow:hidden;transition:all.35s ease;}
 .card-story::before{content:'';position:absolute;top:0;right:0;width:100%;height:4px;background:linear-gradient(90deg,var(--green),var(--navy2));opacity:0;transition:.35s;}
 .card-story:hover::before{opacity:1;}
@@ -202,7 +205,6 @@ function update(withBurst=true){
   let pages=getPages(pv);
   if(cur>=pages) cur=pages-1;
   if(cur<0) cur=0;
-
   const gap=22;
   const cw=(vp.clientWidth - gap*(pv-1))/pv;
   document.querySelectorAll('.card-story').forEach((c,i)=>{
@@ -210,11 +212,8 @@ function update(withBurst=true){
     const isActive = i>=cur*pv && i<(cur+1)*pv;
     c.classList.toggle('active',isActive);
   });
-
   const x=cur*(cw+gap)*pv;
-  // RTL: أول كارت على اليمين، عشان نكشف اللي بعده نحرك للمسافة الموجبة
   track.style.transform=`translateX(${x}px)`;
-
   document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('active',i===cur));
   counter.textContent=`${cur+1} / ${pages}`;
   restartProgress();
@@ -256,7 +255,6 @@ function goTo(i, withBurst=true){
   const next=Math.max(0,Math.min(i,pages-1));
   if(next!==cur && withBurst) triggerStarBurst();
   cur=next;
-  // لو perView اتغير نبني الـ dots من جديد
   if(dotsBox.children.length!==pages) buildDots(pv);
   update(withBurst);
 }
@@ -285,14 +283,57 @@ document.getElementById('prev').onclick=()=>goTo(cur-1);
 vp.addEventListener('mouseenter',stopAuto);
 vp.addEventListener('mouseleave',startAuto);
 
-// swipe للموبايل
-let sx=0;
-vp.addEventListener('touchstart',e=>{sx=e.touches[0].clientX; stopAuto();},{passive:true});
-vp.addEventListener('touchend',e=>{
-  const dx=e.changedTouches[0].clientX - sx;
-  if(Math.abs(dx)>50){ if(dx<0) goTo(cur+1); else goTo(cur-1); }
+// ===== سحب احترافي - اتجاه صحيح RTL =====
+let isDragging=false, startX=0, currentX=0;
+function getBaseX(){
+  const pv=perView();
+  const gap=22;
+  const cw=(vp.clientWidth - gap*(pv-1))/pv;
+  return cur*(cw+gap)*pv;
+}
+vp.addEventListener('pointerdown',(e)=>{
+  isDragging=true;
+  startX=e.clientX;
+  currentX=e.clientX;
+  vp.classList.add('dragging');
+  track.classList.add('dragging');
+  track.style.transition='none';
+  vp.setPointerCapture(e.pointerId);
+  stopAuto();
+});
+vp.addEventListener('dragstart',(e)=>e.preventDefault());
+window.addEventListener('pointermove',(e)=>{
+  if(!isDragging) return;
+  currentX=e.clientX;
+  // اتجاه صحيح: الكارد يمشي مع الايد
+  const base=getBaseX();
+  let newX = base + (currentX - startX);
+  const pv=perView();
+  const gap=22;
+  const cw=(vp.clientWidth - gap*(pv-1))/pv;
+  const pages=getPages(pv);
+  const maxX=(pages-1)*(cw+gap)*pv;
+  newX=Math.max(0,Math.min(newX,maxX));
+  track.style.transform=`translateX(${newX}px)`;
+},{passive:false});
+function endDrag(e){
+  if(!isDragging) return;
+  isDragging=false;
+  vp.classList.remove('dragging');
+  track.classList.remove('dragging');
+  track.style.transition='';
+  const diff=startX - currentX; // موجب = سحب شمال، سالب = سحب يمين
+  // في RTL: السحب يمين يجيب اللي بعده
+  if(Math.abs(diff)>80){
+    if(diff<0) goTo(cur+1); // سحبت يمين -> التالي
+    else goTo(cur-1); // سحبت شمال -> السابق
+  }else{
+    goTo(cur,false);
+  }
   startAuto();
-},{passive:true});
+}
+window.addEventListener('pointerup',endDrag);
+window.addEventListener('pointercancel',endDrag);
 
 let resizeTimer;
 window.addEventListener('resize',()=>{
