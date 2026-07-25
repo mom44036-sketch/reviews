@@ -276,7 +276,7 @@ function startAuto(){
   autoTimer=setInterval(()=>{
     const pages=getPages(perView());
     goTo((cur+1)%pages);
-  },6000);
+  },60000);
 }
 function stopAuto(){ if(autoTimer) clearInterval(autoTimer); }
 
