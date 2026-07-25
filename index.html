@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>قصص نجاح حقيقية - بالأرقام</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0f2a4d;--navy2:#122e5a;--red:#e55a5a;--green:#ffb729;--gray:#8a99b1;--light:#f8fafc;}
+body{font-family:'Tajawal',sans-serif;background:#fff;color:var(--navy);overflow-x:hidden;}
+.section{max-width:1350px;margin:0 auto;padding:72px 20px;position:relative;}
+.title{font-weight:800;font-size:clamp(28px,3.5vw,40px);color:var(--navy);line-height:1.25;}
+.sub{color:var(--gray);font-size:clamp(14px,1.5vw,16px);margin-top:10px;}
+.badge-story{border:1px solid #e6eaf0;border-radius:999px;padding:10px 18px;background:#fff;display:inline-flex;align-items:center;gap:10px;font-size:14px;font-weight:700;color:var(--navy);box-shadow:0 2px 10px rgba(15,42,77,.05);}
+/* Carousel */
+.viewport{overflow:hidden;position:relative;}
+.track{display:flex;gap:22px;transition:transform .7s cubic-bezier(.22,1,.36,1);will-change:transform;}
+.card-story{background:#fff;border:1px solid #eef2f7;border-radius:22px;padding:24px 22px 20px;box-shadow:0 10px 30px rgba(15,42,77,.05);flex-shrink:0;min-height:340px;display:flex;flex-direction:column;position:relative;overflow:hidden;transition:all .35s ease;}
+.card-story::before{content:'';position:absolute;top:0;right:0;width:100%;height:4px;background:linear-gradient(90deg,var(--green),var(--navy2));opacity:0;transition:.35s;}
+/* .card-story:hover{transform:translateY(-6px);box-shadow:0 18px 45px rgba(15,42,77,.12);border-color:#e1e8f0;} */
+.card-story:hover::before{opacity:1;}
+.card-story.active{border-color:var(--navy2);box-shadow:0 16px 40px rgba(18,46,90,.12);}
+.play{width:42px;height:42px;border-radius:50%;background:var(--navy2);border:none;display:flex;align-items:center;justify-content:center;transition:.2s;box-shadow:0 4px 12px rgba(18,46,90,.18);}
+.play:hover{background:var(--green);transform:scale(1.08);}
+.avatar{width:52px;height:52px;border-radius:50%;border:2px solid #f1f4f8;object-fit:cover;}
+.name{font-weight:800;font-size:15.5px;}
+.meta{font-size:12.5px;color:var(--gray);margin-top:3px;}
+.score{background:var(--light);border-radius:14px;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;margin:20px 0 18px;position:relative;}
+.score .before{color:var(--red);font-weight:800;font-size:24px;}
+.score .after{color:var(--navy);font-weight:800;font-size:28px;}
+.score .lbl{font-size:12px;color:#9aa9bf;font-weight:500;}
+.line{flex:1;height:3px;background:#e6eaf0;margin:0 14px;border-radius:10px;position:relative;}
+.dotA{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:32px;height:32px;background:var(--green);border-radius:50%;border:3px solid var(--light);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(26,188,156,.35);animation:pulse 2s infinite;}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(26,188,156,.5)}70%{box-shadow:0 0 0 10px rgba(26,188,156,0)}100%{box-shadow:0 0 0 0 rgba(26,188,156,0)}}
+.quote{font-size:14.5px;color:#5a6b82;line-height:1.75;flex-grow:1;min-height:70px;}
+
+/* Nav */
+.nav-btn{width:48px;height:48px;border-radius:50%;background:var(--navy2);border:none;color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(18,46,90,.18);transition:.25s;}
+.nav-btn:hover{background:var(--navy);transform:translateY(-2px);box-shadow:0 10px 24px rgba(18,46,90,.25);}
+.nav-btn:active{transform:scale(.96);}
+.dot{width:10px;height:10px;border-radius:50%;background:#d7deea;border:none;transition:all .35s cubic-bezier(.22,1,.36,1);}
+.dot.active{width:32px;background:var(--navy2);border-radius:8px;}
+/* Star Burst Animation */
+.stars{
+  display:flex;
+  gap:4px;
+  color:#f5b400;
+  font-size:17px;
+  margin-top:6px;
+}
+.star-burst{position:fixed;pointer-events:none;z-index:9999;font-size:18px;color:#f5b400;animation:burst 1.2s cubic-bezier(.22,1,.36,1) forwards;}
+.stars span{
+  display:inline-block;
+  opacity:0;
+  transform: translateY(12px) scale(0.7);
+  filter: blur(6px);
+  animation: starReveal 0.7s cubic-bezier(.22,1,.36,1) forwards;
+}
+.stars span:nth-child(1){animation-delay:0.05s}
+.stars span:nth-child(2){animation-delay:0.15s}
+.stars span:nth-child(3){animation-delay:0.25s}
+.stars span:nth-child(4){animation-delay:0.35s}
+.stars span:nth-child(5){animation-delay:0.45s}
+@keyframes starReveal{
+  0%{ opacity:0; transform: translateY(12px) scale(0.7); filter: blur(6px); }
+  60%{ opacity:1; transform: translateY(-2px) scale(1.1); filter: blur(0); }
+  100%{ opacity:1; transform: translateY(0) scale(1); filter: blur(0); }
+}
+@keyframes burst{
+  0%{transform:translate(0,0) scale(0) rotate(0deg);opacity:1;}
+  100%{transform:translate(var(--tx),var(--ty)) scale(1.4) rotate(360deg);opacity:0;}
+}
+.confetti{position:fixed;pointer-events:none;z-index:9998;width:8px;height:8px;border-radius:50%;animation:confetti 1s ease-out forwards;}
+@keyframes confetti{
+  0%{transform:translate(0,0) scale(1);opacity:1;}
+  100%{transform:translate(var(--tx),var(--ty)) rotate(720deg) scale(0);opacity:0;}
+}
+/* Progress bar */
+.progress-line{height:3px;background:#eef2f7;border-radius:10px;overflow:hidden;margin-top:24px;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--navy2),var(--green));width:0%;transition:width 4s linear;}
+
+/* === إضافات الأنيميشن الجديد - آلة كاتبة + عد تصاعدي === */
+.quote.typewriter{
+  position:relative;
+}
+.quote.typewriter::after{
+  content:'|';
+  display:inline-block;
+  margin-right:4px;
+  color:var(--navy2);
+  font-weight:800;
+  animation:blinkCursor .75s step-end infinite;
+}
+.quote.typewriter.done::after{
+  content:'';
+  animation:none;
+  display:none;
+}
+@keyframes blinkCursor{
+  0%,50%{opacity:1}
+  51%,100%{opacity:0}
+}
+.count-num{
+  display:inline-block;
+  min-width:30px;
+}
+</style>
+</head>
+<body>
+<section class="section">
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-end gap-4 mb-5">
+   
+    <div class="order-2 order-md-1 text-end">
+      <h1 class="title">قصص نجاح حقيقية - بالأرقام</h1>
+      <p class="sub mb-0">طلاب بدأوا من 50 و 60 واليوم في الجامعات اللي يحلمون فيها</p>
+    </div>
+
+     <div class="order-1 order-md-2">
+      <span class="badge-story">
+        <span style="width:24px;height:24px;border-radius:50%;background:var(--navy2);display:inline-flex;align-items:center;justify-content:center">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="white"><path d="M8 5.14v14l11-7-11-7z"/></svg>
+        </span>
+        120+ قصة مصورة
+      </span>
+    </div>
+</div>
+  </div>
+
+  <div id="vp" class="viewport">
+    <div id="track" class="track"></div>
+  </div>
+
+  <div class="progress-line"><div id="progressFill" class="progress-fill"></div></div>
+
+  <div class="d-flex justify-content-between align-items-center mt-4 flex-wrap gap-3">
+      <div class="d-flex gap-2">
+        <button id="prev" class="nav-btn" aria-label="السابق">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+        <button id="next" class="nav-btn" aria-label="التالي">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+      </div>
+    <div id="dots" class="d-flex gap-2 align-items-center"></div>
+    <div style="font-size:12px;color:#9aa9bf;" id="counter">1 / 4</div>
+  </div>
+</section>
+
+<script>
+const testimonials = [
+  {id:1,name:"عبدالرحمن المطيري",type:"ستيب",year:"2024",before:60,after:97,quote:"كنت أعيد ستيب للمرة الثالثة مع قياس بلس جبت 97 في شهرين بس. المحاكي حرفيًا نفس الاختبار!",avatar:"saudi_avatar_pixar.webp"},
+  {id:2,name:"نورة السبيعي",type:"قدرات",year:"2024",before:65,after:94,quote:"القدرات كان عقدة حياتي، شرح الأستاذة سارة غير كل شيء. الخطة الذكية خلتني أذاكر بذكاء مو بجهد.",avatar:"saudi_woman_avatar.webp"},
+  {id:3,name:"فيصل الدوسري",type:"تحصيلي",year:"2024",before:70,after:91,quote:"التحصيلي يحتاج تركيز ملخصات قياس بلس وفرت علي 3 شهور مذاكرة، جبت 91 ودخلت الطب!",avatar:"saudi_avatar_pixar.webp"},
+  {id:4,name:"تركي العتيبي",type:"قدرات",year:"2024",before:58,after:92,quote:"من 58 إلى 92 في شهر ونص! بنك الأسئلة هو السر، نفس أفكار الاختبار بالضبط.",avatar:"saudi_avatar_pixar.webp"},
+  {id:5,name:"سارة القحطاني",type:"تحصيلي",year:"2024",before:62,after:95,quote:"ملخصات قياس بلس شاملة كل شيء، ما احتجت أي مصدر ثاني وجبت 95.",avatar:"saudi_woman_avatar.webp"},
+  {id:6,name:"عبدالله الشهراني",type:"ستيب",year:"2024",before:55,after:96,quote:"المحاكي نفس اختبار ستيب بالضبط، دخلت وأنا مطمئن وجبت 96.",avatar:"saudi_avatar_pixar.webp"},
+  {id:7,name:"ريم العبدالله",type:"قدرات",year:"2024",before:60,after:93,quote:"كنت خايفة من الكمي بس مع الشرح المبسط قدرت أجيب 93.",avatar:"saudi_woman_avatar.webp"},
+  {id:8,name:"محمد الحربي",type:"تحصيلي",year:"2024",before:68,after:96,quote:"أفضل استثمار هو قياس بلس، وفر وقتي وضاعف درجتي.",avatar:"saudi_avatar_pixar.webp"},
+  {id:9,name:"لولوة الدوسري",type:"ستيب",year:"2024",before:62,after:98,quote:"98 في ستيب! ما توقعت بيوم إني أجيبها، شكراً قياس بلس.",avatar:"saudi_woman_avatar.webp"}
+];
+
+const track=document.getElementById('track');
+const dotsBox=document.getElementById('dots');
+const counter=document.getElementById('counter');
+const progressFill=document.getElementById('progressFill');
+let cur=0;
+let autoTimer=null;
+
+function perView(){
+  const w=window.innerWidth;
+  if(w>=1200) return 3;
+  if(w>=768) return 2;
+  return 1;
+}
+
+function cardHTML(it,idx,isActive){
+ return `<div class="card-story ${isActive?'active':''}">
+  <div class="d-flex justify-content-between align-items-center">
+    <div class="d-flex align-items-center gap-3">
+      <img src="${it.avatar}" class="avatar" loading="lazy">
+      <div style="text-align:right">
+        <div class="name">${it.name}</div>
+        <div class="meta">${it.type} - ${it.year}</div>
+      </div>
+    </div>
+    <button class="play"><svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M8 5.14v14l11-7-11-7z"/></svg></button>
+  </div>
+
+  <div class="score">
+    <div class="text-center" style="width:68px"><div class="lbl">قبل</div><div class="before count-num" data-target="${it.before}">0</div></div>
+    <div style="flex:1;display:flex;align-items:center;padding:0 10px">
+      <div class="line"><span class="dotA">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      </span></div>
+    </div>
+    <div class="text-center" style="width:68px"><div class="lbl">بعد</div><div class="after count-num" data-target="${it.after}">0</div></div>
+  </div>
+  <p class="quote typewriter" data-idx="${idx}"></p>
+  <div class="stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+ </div>`;
+}
+
+function render(){
+  track.innerHTML=testimonials.map((it,i)=>cardHTML(it,i,i>=cur*perView() && i< (cur+1)*perView())).join('');
+  buildDots();
+  update();
+}
+
+function buildDots(){
+  const pages=Math.ceil(testimonials.length/perView());
+  dotsBox.innerHTML=Array.from({length:pages}).map((_,i)=>`<button class="dot ${i===cur?'active':''}" data-i="${i}"></button>`).join('');
+  dotsBox.querySelectorAll('.dot').forEach(b=>b.addEventListener('click',()=>goTo(+b.dataset.i)));
+  counter.textContent=`${cur+1} / ${pages}`;
+}
+
+// === دوال الأنيميشن الجديدة ===
+function animateCount(el, target){
+  const duration = 1400;
+  const startTime = performance.now();
+  function step(now){
+    const elapsed = now - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    const ease = 1 - Math.pow(1 - progress, 3);
+    const current = Math.floor(ease * target);
+    el.textContent = current;
+    if(progress < 1){
+      requestAnimationFrame(step);
+    } else {
+      el.textContent = target;
+    }
+  }
+  requestAnimationFrame(step);
+}
+
+let _typingTimers = [];
+function animateVisibleCards(){
+  // مسح أي تايمر قديم لآلة الكاتبة
+  _typingTimers.forEach(t=>clearTimeout(t));
+  _typingTimers = [];
+
+  const activeCards = document.querySelectorAll('.card-story.active');
+  activeCards.forEach(card=>{
+    // 1- عد تصاعدي للأرقام
+    card.querySelectorAll('.count-num').forEach(el=>{
+      const target = parseInt(el.dataset.target,10);
+      el.textContent = '0';
+      animateCount(el, target);
+    });
+
+    // 2- آلة كاتبة احترافية للريفيو
+    const quoteEl = card.querySelector('.quote.typewriter');
+    if(quoteEl){
+      const idx = parseInt(quoteEl.dataset.idx,10);
+      const fullText = `"${testimonials[idx].quote}"`;
+      quoteEl.textContent = '';
+      quoteEl.classList.remove('done');
+      let i = 0;
+      function typeChar(){
+        if(i <= fullText.length){
+          quoteEl.textContent = fullText.substring(0, i);
+          i++;
+          // سرعة احترافية متغيرة 15-45ms زي الكتابة الحقيقية
+          const delay = 18 + Math.random()*32;
+          const t = setTimeout(typeChar, delay);
+          _typingTimers.push(t);
+        } else {
+          quoteEl.classList.add('done');
+        }
+      }
+      // تأخير بسيط قبل بداية الكتابة لشكل احترافي
+      const startDelay = setTimeout(typeChar, 250);
+      _typingTimers.push(startDelay);
+    }
+  });
+}
+
+function update(){
+  const vp=document.getElementById('vp');
+  const pv=perView();
+  const gap=22;
+  const cw=(vp.clientWidth - gap*(pv-1))/pv;
+  document.querySelectorAll('.card-story').forEach(c=>c.style.width=cw+'px');
+  // RTL fix: track starts at right, so translate positive to show next? In RTL flex, first item is at right. To move left we translate negative.
+  const x=cur*(cw+gap)*pv;
+  track.style.transform=`translateX(${x}px)`; // positive because RTL
+  document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('active',i===cur));
+  counter.textContent=`${cur+1} / ${Math.ceil(testimonials.length/perView())}`;
+  restartProgress();
+  animateVisibleCards();
+}
+
+function triggerStarBurst(){
+  const centerX=window.innerWidth/2;
+  const centerY=window.innerHeight/2;
+  const colors=['#f5b400','#1abc9c','#122e5a','#e55a5a','#fff'];
+  for(let i=0;i<18;i++){
+    const star=document.createElement('div');
+    star.className='star-burst';
+    star.textContent=['★','✦','✧','⭐'][Math.floor(Math.random()*4)];
+    star.style.left=centerX+'px';
+    star.style.top=centerY+'px';
+    const angle=Math.random()*Math.PI*2;
+    const dist=80+Math.random()*220;
+    star.style.setProperty('--tx', Math.cos(angle)*dist+'px');
+    star.style.setProperty('--ty', Math.sin(angle)*dist+'px');
+    star.style.fontSize=(12+Math.random()*22)+'px';
+    document.body.appendChild(star);
+    setTimeout(()=>star.remove(),4200);
+  }
+  for(let i=0;i<12;i++){
+    const c=document.createElement('div');
+    c.className='confetti';
+    c.style.left=centerX+'px';
+    c.style.top=centerY+'px';
+    c.style.background=colors[Math.floor(Math.random()*colors.length)];
+    const angle=Math.random()*Math.PI*2;
+    const dist=60+Math.random()*300;
+    c.style.setProperty('--tx', Math.cos(angle)*dist+'px');
+    c.style.setProperty('--ty', Math.sin(angle)*dist+'px');
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),60000);
+  }
+}
+
+function goTo(i, withBurst=true){
+  const pages=Math.ceil(testimonials.length/perView());
+  const next=Math.max(0,Math.min(i,pages-1));
+  if(next!==cur && withBurst) triggerStarBurst();
+  cur=next;
+  render();
+}
+
+function restartProgress(){
+  progressFill.style.transition='none';
+  progressFill.style.width='0%';
+  void progressFill.offsetWidth;
+  progressFill.style.transition='width 60s linear';
+  progressFill.style.width='100%';
+}
+
+function startAuto(){
+  stopAuto();
+  restartProgress();
+  autoTimer=setInterval(()=>{
+    const pages=Math.ceil(testimonials.length/perView());
+    goTo((cur+1)%pages);
+  },60000);
+}
+function stopAuto(){ if(autoTimer) clearInterval(autoTimer); progressFill.style.transition='none'; }
+
+document.getElementById('next').onclick=()=>goTo(cur+1);
+document.getElementById('prev').onclick=()=>goTo(cur-1);
+
+const vpEl=document.getElementById('vp');
+vpEl.addEventListener('mouseenter',stopAuto);
+vpEl.addEventListener('mouseleave',startAuto);
+vpEl.addEventListener('touchstart',stopAuto,{passive:true});
+vpEl.addEventListener('touchend',startAuto);
+
+window.addEventListener('resize',()=>{ goTo(cur,false); });
+render();
+startAuto();
+</script>
+</body>
+</html>
