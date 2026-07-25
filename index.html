@@ -50,14 +50,12 @@ body{font-family:'Tajawal',sans-serif;background:#fff;color:var(--navy);overflow
 .card-story.active .stars span:nth-child(5){animation-delay:0.45s, 1.4s}
 @keyframes starEnter{0%{ opacity:0; transform:translateY(14px) scale(0.5) rotate(-15deg); filter:blur(6px); }60%{ opacity:1; transform:translateY(-5px) scale(1.3) rotate(10deg); filter:blur(0); }100%{ opacity:1; transform:translateY(0) scale(1) rotate(0deg); filter:blur(0); }}
 @keyframes starLoop{0%,100%{ transform:translateY(0) scale(1) rotate(0deg); }25%{ transform:translateY(-3px) scale(1.12) rotate(5deg); }50%{ transform:translateY(0) scale(1) rotate(0deg); }75%{ transform:translateY(-2px) scale(1.12) rotate(-5deg); }}
-.card-story:hover .stars span{color:#ffb700;}
 .star-burst{position:fixed;pointer-events:none;z-index:9999;font-size:18px;color:#f5b400;animation:burst 1.2s cubic-bezier(.22,1,.36,1) forwards;}
 @keyframes burst{0%{transform:translate(0,0) scale(0) rotate(0deg);opacity:1;}100%{transform:translate(var(--tx),var(--ty)) scale(1.4) rotate(360deg);opacity:0;}}
 .confetti{position:fixed;pointer-events:none;z-index:9998;width:8px;height:8px;border-radius:50%;animation:confetti 1s ease-out forwards;}
 @keyframes confetti{0%{transform:translate(0,0) scale(1);opacity:1;}100%{transform:translate(var(--tx),var(--ty)) rotate(720deg) scale(0);opacity:0;}}
 .progress-line{height:3px;background:#eef2f7;border-radius:10px;overflow:hidden;margin-top:24px;}
 .progress-fill{height:100%;background:linear-gradient(90deg,var(--navy2),var(--green));width:0%;}
-.quote.typewriter{position:relative;}
 .quote.typewriter::after{content:'|';display:inline-block;margin-right:4px;color:var(--navy2);font-weight:800;animation:blinkCursor.75s step-end infinite;}
 .quote.typewriter.done::after{display:none;}
 @keyframes blinkCursor{0%,50%{opacity:1}51%,100%{opacity:0}}
@@ -81,21 +79,12 @@ body{font-family:'Tajawal',sans-serif;background:#fff;color:var(--navy);overflow
       </span>
     </div>
   </div>
-
-  <div id="vp" class="viewport">
-    <div id="track" class="track"></div>
-  </div>
-
+  <div id="vp" class="viewport"><div id="track" class="track"></div></div>
   <div class="progress-line"><div id="progressFill" class="progress-fill"></div></div>
-
   <div class="d-flex justify-content-between align-items-center mt-4 flex-wrap gap-3">
       <div class="d-flex gap-2">
-        <button type="button" id="prev" class="nav-btn" aria-label="السابق">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
-        </button>
-        <button type="button" id="next" class="nav-btn" aria-label="التالي">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
-        </button>
+        <button type="button" id="prev" class="nav-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></button>
+        <button type="button" id="next" class="nav-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button>
       </div>
     <div id="dots" class="d-flex gap-2 align-items-center"></div>
     <div style="font-size:12px;color:#9aa9bf;" id="counter">1 / 4</div>
@@ -124,28 +113,15 @@ const vp=document.getElementById('vp');
 let cur=0, autoTimer=null, _typingTimers=[];
 let isDragging=false, hasDragged=false, startX=0, currentX=0;
 
-function perView(){
-  const w=window.innerWidth;
-  if(w>=1200) return 3;
-  if(w>=768) return 2;
-  return 1;
-}
+function perView(){ const w=window.innerWidth; if(w>=1200) return 3; if(w>=768) return 2; return 1; }
 function getPages(pv){ return Math.ceil(testimonials.length/pv); }
-
-function getBaseX(){
-  const pv=perView();
-  const gap=22;
-  const cw=(vp.clientWidth - gap*(pv-1))/pv;
-  return cur*(cw+gap)*pv;
-}
+function getBaseX(){ const pv=perView(); const gap=22; const cw=(vp.clientWidth - gap*(pv-1))/pv; return cur*(cw+gap)*pv; }
 
 function snapToCurrent(){
   const base=getBaseX();
   track.style.transition='transform .35s cubic-bezier(.22,1,.36,1)';
   track.style.transform=`translateX(${base}px)`;
-  track.addEventListener('transitionend',()=>{
-    track.style.transition='';
-  },{once:true});
+  track.addEventListener('transitionend',()=>{ track.style.transition=''; },{once:true});
 }
 
 function cardHTML(it,idx){
@@ -153,20 +129,13 @@ function cardHTML(it,idx){
   <div class="d-flex justify-content-between align-items-center">
     <div class="d-flex align-items-center gap-3">
       <img src="${it.avatar}" class="avatar" loading="lazy" onerror="this.src='https://i.pravatar.cc/100?img=${idx+1}'">
-      <div style="text-align:right">
-        <div class="name">${it.name}</div>
-        <div class="meta">${it.type} - ${it.year}</div>
-      </div>
+      <div style="text-align:right"><div class="name">${it.name}</div><div class="meta">${it.type} - ${it.year}</div></div>
     </div>
     <button type="button" class="play"><svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M8 5.14v14l11-7-11-7z"/></svg></button>
   </div>
    <div class="score">
     <div class="text-center" style="width:68px"><div class="lbl">قبل</div><div class="before count-num" data-target="${it.before}">0</div></div>
-    <div style="flex:1;display:flex;align-items:center;padding:0 10px">
-      <div class="line"><span class="dotA">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-      </span></div>
-    </div>
+    <div style="flex:1;display:flex;align-items:center;padding:0 10px"><div class="line"><span class="dotA"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></span></div></div>
     <div class="text-center" style="width:68px"><div class="lbl">بعد</div><div class="after count-num" data-target="${it.after}">0</div></div>
   </div>
   <p class="quote typewriter" data-idx="${idx}"></p>
@@ -179,13 +148,11 @@ function init(){
   buildDots(perView());
   update(false, true);
 }
-
 function buildDots(pv){
   const pages=getPages(pv);
   dotsBox.innerHTML=Array.from({length:pages}).map((_,i)=>`<button type="button" class="dot ${i===cur?'active':''}" data-i="${i}"></button>`).join('');
   dotsBox.querySelectorAll('.dot').forEach(b=>b.addEventListener('click',()=>goTo(+b.dataset.i, true, true)));
 }
-
 function animateCount(el,target){
   const duration=1400, start=performance.now();
   function step(now){
@@ -196,100 +163,63 @@ function animateCount(el,target){
   }
   requestAnimationFrame(step);
 }
-
 function animateVisibleCards(){
-  _typingTimers.forEach(t=>clearTimeout(t));
-  _typingTimers=[];
+  _typingTimers.forEach(t=>clearTimeout(t)); _typingTimers=[];
   document.querySelectorAll('.card-story.active').forEach(card=>{
     card.querySelectorAll('.count-num').forEach(el=>{
-      const target=parseInt(el.dataset.target,10);
-      el.textContent='0';
-      animateCount(el,target);
+      const target=parseInt(el.dataset.target,10); el.textContent='0'; animateCount(el,target);
     });
-    const quoteEl=card.querySelector('.quote.typewriter');
-    if(!quoteEl) return;
+    const quoteEl=card.querySelector('.quote.typewriter'); if(!quoteEl) return;
     const idx=parseInt(quoteEl.dataset.idx,10);
     const fullText=`"${testimonials[idx].quote}"`;
-    quoteEl.textContent=''; quoteEl.classList.remove('done');
-    let i=0;
+    quoteEl.textContent=''; quoteEl.classList.remove('done'); let i=0;
     function typeChar(){
-      if(i<=fullText.length){
-        quoteEl.textContent=fullText.substring(0,i);
-        i++;
-        const delay=18+Math.random()*32;
-        _typingTimers.push(setTimeout(typeChar,delay));
-      }else{
-        quoteEl.classList.add('done');
-      }
+      if(i<=fullText.length){ quoteEl.textContent=fullText.substring(0,i); i++; _typingTimers.push(setTimeout(typeChar,18+Math.random()*32)); }
+      else{ quoteEl.classList.add('done'); }
     }
     _typingTimers.push(setTimeout(typeChar,250));
   });
 }
-
 function update(withBurst=true, withAnim=true){
-  const pv=perView();
-  let pages=getPages(pv);
-  if(cur>=pages) cur=pages-1;
-  if(cur<0) cur=0;
-  const gap=22;
-  const cw=(vp.clientWidth - gap*(pv-1))/pv;
+  const pv=perView(); let pages=getPages(pv);
+  if(cur>=pages) cur=pages-1; if(cur<0) cur=0;
+  const gap=22; const cw=(vp.clientWidth - gap*(pv-1))/pv;
   document.querySelectorAll('.card-story').forEach((c,i)=>{
-    c.style.width=cw+'px';
-    const isActive = i>=cur*pv && i<(cur+1)*pv;
-    c.classList.toggle('active',isActive);
+    c.style.width=cw+'px'; const isActive = i>=cur*pv && i<(cur+1)*pv; c.classList.toggle('active',isActive);
   });
   const x=cur*(cw+gap)*pv;
   track.style.transform=`translateX(${x}px)`;
   document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('active',i===cur));
   counter.textContent=`${cur+1} / ${pages}`;
-  if(withAnim){
-    restartProgress();
-    animateVisibleCards();
-  }
+  if(withAnim){ restartProgress(); animateVisibleCards(); }
 }
-
 function triggerStarBurst(){
-  const rect=vp.getBoundingClientRect();
-  const centerX=rect.left+rect.width/2;
-  const centerY=rect.top+rect.height/2;
+  const rect=vp.getBoundingClientRect(); const centerX=rect.left+rect.width/2; const centerY=rect.top+rect.height/2;
   const colors=['#f5b400','#1abc9c','#122e5a','#e55a5a','#fff'];
   for(let i=0;i<18;i++){
-    const star=document.createElement('div');
-    star.className='star-burst';
-    star.textContent=['★','✦','✧','⭐'][Math.floor(Math.random()*4)];
+    const star=document.createElement('div'); star.className='star-burst'; star.textContent=['★','✦','✧','⭐'][Math.floor(Math.random()*4)];
     star.style.left=centerX+'px'; star.style.top=centerY+'px';
     const angle=Math.random()*Math.PI*2, dist=80+Math.random()*220;
-    star.style.setProperty('--tx', Math.cos(angle)*dist+'px');
-    star.style.setProperty('--ty', Math.sin(angle)*dist+'px');
-    star.style.fontSize=(12+Math.random()*22)+'px';
-    document.body.appendChild(star);
-    setTimeout(()=>star.remove(),1300);
+    star.style.setProperty('--tx', Math.cos(angle)*dist+'px'); star.style.setProperty('--ty', Math.sin(angle)*dist+'px');
+    star.style.fontSize=(12+Math.random()*22)+'px'; document.body.appendChild(star); setTimeout(()=>star.remove(),1300);
   }
   for(let i=0;i<12;i++){
-    const c=document.createElement('div');
-    c.className='confetti'; c.style.left=centerX+'px'; c.style.top=centerY+'px';
+    const c=document.createElement('div'); c.className='confetti'; c.style.left=centerX+'px'; c.style.top=centerY+'px';
     c.style.background=colors[Math.floor(Math.random()*colors.length)];
     const angle=Math.random()*Math.PI*2, dist=60+Math.random()*300;
-    c.style.setProperty('--tx', Math.cos(angle)*dist+'px');
-    c.style.setProperty('--ty', Math.sin(angle)*dist+'px');
-    document.body.appendChild(c);
-    setTimeout(()=>c.remove(),1100);
+    c.style.setProperty('--tx', Math.cos(angle)*dist+'px'); c.style.setProperty('--ty', Math.sin(angle)*dist+'px');
+    document.body.appendChild(c); setTimeout(()=>c.remove(),1100);
   }
 }
-
 function goTo(i, withBurst=true, withAnim=true){
-  const pv=perView();
-  const pages=getPages(pv);
+  const pv=perView(); const pages=getPages(pv);
   const next=Math.max(0,Math.min(i,pages-1));
   if(next!==cur && withBurst) triggerStarBurst();
-  cur=next;
-  if(dotsBox.children.length!==pages) buildDots(pv);
+  cur=next; if(dotsBox.children.length!==pages) buildDots(pv);
   update(withBurst, withAnim);
 }
-
 function restartProgress(){
-  progressFill.style.transition='none';
-  progressFill.style.width='0%';
+  progressFill.style.transition='none'; progressFill.style.width='0%';
   void progressFill.offsetWidth;
   requestAnimationFrame(()=>{
     progressFill.style.transition='width 60s linear';
@@ -304,40 +234,34 @@ function startAuto(resetProgress=true){
     goTo((cur+1)%pages, true, true);
   },60000);
 }
-function stopAuto(){ if(autoTimer) clearInterval(autoTimer); }
+function stopAuto(){ if(autoTimer){ clearInterval(autoTimer); autoTimer=null; } }
 
 document.getElementById('next').onclick=()=>goTo(cur+1, true, true);
 document.getElementById('prev').onclick=()=>goTo(cur-1, true, true);
-vp.addEventListener('mouseenter',()=>stopAuto());
-vp.addEventListener('mouseleave',()=>startAuto(true));
+vp.addEventListener('mouseenter',()=>{ stopAuto(); });
+vp.addEventListener('mouseleave',()=>{ startAuto(true); });
 
-// ===== سحب احترافي FIXED - بيفرق بين الكليك والسحب =====
+// ===== FIXED DRAG LOGIC =====
 vp.addEventListener('pointerdown',(e)=>{
-  isDragging=true;
-  hasDragged=false;
-  startX=e.clientX;
-  currentX=e.clientX;
-  vp.classList.add('dragging');
-  track.classList.add('dragging');
+  isDragging=true; hasDragged=false; startX=e.clientX; currentX=e.clientX;
+  vp.classList.add('dragging'); track.classList.add('dragging');
   track.style.transition='none';
   vp.setPointerCapture(e.pointerId);
-  stopAuto();
+  // لا توقف الاوتو هنا - استنى شوف هل هي سحبة ولا كليك
 });
-
 vp.addEventListener('dragstart',(e)=>e.preventDefault());
-
 window.addEventListener('pointermove',(e)=>{
   if(!isDragging) return;
   currentX=e.clientX;
-  if(Math.abs(currentX - startX) > 6) hasDragged = true;
-
-  const base=getBaseX();
-  let newX = base + (currentX - startX);
-  const pv=perView();
-  const gap=22;
-  const cw=(vp.clientWidth - gap*(pv-1))/pv;
-  const pages=getPages(pv);
-  const maxX=(pages-1)*(cw+gap)*pv;
+  const diff = Math.abs(currentX - startX);
+  if(diff > 6 && !hasDragged){
+    hasDragged=true;
+    stopAuto(); // اول ما يبدأ سحب فعلا وقف الاوتو
+  }
+  if(!hasDragged) return; // لو لسه كليك متسحبش التراك
+  const base=getBaseX(); let newX = base + (currentX - startX);
+  const pv=perView(); const gap=22; const cw=(vp.clientWidth - gap*(pv-1))/pv;
+  const pages=getPages(pv); const maxX=(pages-1)*(cw+gap)*pv;
   newX=Math.max(0,Math.min(newX,maxX));
   track.style.transform=`translateX(${newX}px)`;
 },{passive:false});
@@ -345,14 +269,12 @@ window.addEventListener('pointermove',(e)=>{
 function endDrag(e){
   if(!isDragging) return;
   isDragging=false;
-  vp.classList.remove('dragging');
-  track.classList.remove('dragging');
+  vp.classList.remove('dragging'); track.classList.remove('dragging');
   track.style.transition='';
 
-  // لو مجرد ضغطة (كليك) - رجع مكانه بدون انيميشن
   if(!hasDragged){
+    // دي كانت مجرد كليك - رجع كل حاجة ومتلمسش الاوتو
     snapToCurrent();
-    startAuto(false);
     return;
   }
 
@@ -361,9 +283,8 @@ function endDrag(e){
     if(diff<0) goTo(cur+1, true, true);
     else goTo(cur-1, true, true);
   }else{
-    // سحبة خفيفة - رجعه بدون ما تعيد الانيميشن
     snapToCurrent();
-    startAuto(false);
+    startAuto(true);
   }
 }
 window.addEventListener('pointerup',endDrag);
@@ -372,9 +293,9 @@ window.addEventListener('pointercancel',endDrag);
 let resizeTimer;
 window.addEventListener('resize',()=>{
   clearTimeout(resizeTimer);
-  resizeTimer=setTimeout(()=>{ buildDots(perView()); goTo(cur,false,false); },150);
+  resizeTimer=setTimeout(()=>{ buildDots(perView()); goTo(cur,false,false); startAuto(true); },150);
 });
-document.addEventListener('visibilitychange',()=>{ if(document.hidden) stopAuto(); else startAuto(false); });
+document.addEventListener('visibilitychange',()=>{ if(document.hidden) stopAuto(); else startAuto(true); });
 
 init();
 startAuto(true);
