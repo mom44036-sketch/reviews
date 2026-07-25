@@ -40,11 +40,50 @@ body{font-family:'Tajawal',sans-serif;background:#fff;color:var(--navy);overflow
 .nav-btn:active{transform:scale(.96);}
 .dot{width:10px;height:10px;border-radius:50%;background:#d7deea;border:none;transition:all.35s cubic-bezier(.22,1,.36,1);}
 .dot.active{width:32px;background:var(--navy2);border-radius:8px;}
-.stars{display:flex;gap:4px;color:#f5b400;font-size:17px;margin-top:6px;}
+.stars{
+  display:flex;
+  gap:5px;
+  color:#f5b400;
+  font-size:19px;
+  margin-top:8px;
+}
+.stars span{
+  display:inline-block;
+  opacity:0;
+  transform:translateY(14px) scale(0.5) rotate(-15deg);
+  filter:blur(6px);
+}
+.card-story.active .stars span{
+  /* حركة 1 دخول مرة واحدة + حركة 2 بتفضل شغالة للأبد */
+  animation: starEnter 0.75s cubic-bezier(.22,1,.36,1) forwards, starLoop 2.2s ease-in-out infinite;
+}
+.card-story.active .stars span:nth-child(1){animation-delay:0.05s, 0.8s}
+.card-story.active .stars span:nth-child(2){animation-delay:0.15s, 0.95s}
+.card-story.active .stars span:nth-child(3){animation-delay:0.25s, 1.1s}
+.card-story.active .stars span:nth-child(4){animation-delay:0.35s, 1.25s}
+.card-story.active .stars span:nth-child(5){animation-delay:0.45s, 1.4s}
+
+@keyframes starEnter{
+  0%{ opacity:0; transform:translateY(14px) scale(0.5) rotate(-15deg); filter:blur(6px); }
+  60%{ opacity:1; transform:translateY(-5px) scale(1.3) rotate(10deg); filter:blur(0); }
+  100%{ opacity:1; transform:translateY(0) scale(1) rotate(0deg); filter:blur(0); }
+}
+
+@keyframes starLoop{
+  0%,100%{ transform:translateY(0) scale(1) rotate(0deg); }
+  25%{ transform:translateY(-3px) scale(1.12) rotate(5deg); }
+  50%{ transform:translateY(0) scale(1) rotate(0deg); }
+  75%{ transform:translateY(-2px) scale(1.12) rotate(-5deg); }
+}
+
+/* لما تعمل هوفر على الكارت النجوم ترقص اكتر */
+.card-story:hover .stars span{
+  color:#ffb700;
+}
 .star-burst{position:fixed;pointer-events:none;z-index:9999;font-size:18px;color:#f5b400;animation:burst 1.2s cubic-bezier(.22,1,.36,1) forwards;}
-.stars span{display:inline-block;opacity:0;transform:translateY(12px) scale(0.7);filter:blur(6px);animation:starReveal 0.7s cubic-bezier(.22,1,.36,1) forwards;}
+/* .stars span{display:inline-block;opacity:0;transform:translateY(12px) scale(0.7);filter:blur(6px);animation:starReveal 0.7s cubic-bezier(.22,1,.36,1) forwards;}
 .stars span:nth-child(1){animation-delay:0.05s}.stars span:nth-child(2){animation-delay:0.15s}.stars span:nth-child(3){animation-delay:0.25s}.stars span:nth-child(4){animation-delay:0.35s}.stars span:nth-child(5){animation-delay:0.45s}
-@keyframes starReveal{0%{opacity:0;transform:translateY(12px) scale(0.7);filter:blur(6px);}60%{opacity:1;transform:translateY(-2px) scale(1.1);filter:blur(0);}100%{opacity:1;transform:translateY(0) scale(1);filter:blur(0);}}
+@keyframes starReveal{0%{opacity:0;transform:translateY(12px) scale(0.7);filter:blur(6px);}60%{opacity:1;transform:translateY(-2px) scale(1.1);filter:blur(0);}100%{opacity:1;transform:translateY(0) scale(1);filter:blur(0);}} */
 @keyframes burst{0%{transform:translate(0,0) scale(0) rotate(0deg);opacity:1;}100%{transform:translate(var(--tx),var(--ty)) scale(1.4) rotate(360deg);opacity:0;}}
 .confetti{position:fixed;pointer-events:none;z-index:9998;width:8px;height:8px;border-radius:50%;animation:confetti 1s ease-out forwards;}
 @keyframes confetti{0%{transform:translate(0,0) scale(1);opacity:1;}100%{transform:translate(var(--tx),var(--ty)) rotate(720deg) scale(0);opacity:0;}}
