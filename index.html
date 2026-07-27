@@ -253,11 +253,20 @@ function animateVisibleCards() {
     const idx = parseInt(quoteEl.dataset.idx, 10);
     const fullText = `"${testimonials[idx].quote}"`;
     quoteEl.textContent = ''; quoteEl.classList.remove('done'); let i=0;
+  
+    // === التحكم في السرعة من هنا ===
+    const TYPE_SPEED = 7; // كل ما الرقم يقل كل ما الكتابة اسرع - خليه 5 لسوبر سريع
+    const START_DELAY = 30; // تأخير البداية
+
     function typeChar() {
-      if(i <= fullText.length) { quoteEl.textContent = fullText.substring(0,i); i++; _typingTimers.push(setTimeout(typeChar, 18+Math.random()*32)); }
+      if(i <= fullText.length) { 
+        quoteEl.textContent = fullText.substring(0,i); 
+        i++; 
+        _typingTimers.push(setTimeout(typeChar, TYPE_SPEED)); 
+      }
       else { quoteEl.classList.add('done'); }
     }
-    _typingTimers.push(setTimeout(typeChar, 250));
+    _typingTimers.push(setTimeout(typeChar, START_DELAY));
   });
 }
 function update(withBurst = true, withAnim = true) {
