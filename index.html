@@ -255,8 +255,8 @@ function animateVisibleCards() {
     quoteEl.textContent = ''; quoteEl.classList.remove('done'); let i=0;
   
     // === التحكم في السرعة من هنا ===
-    const TYPE_SPEED = 7; // كل ما الرقم يقل كل ما الكتابة اسرع - خليه 5 لسوبر سريع
-    const START_DELAY = 30; // تأخير البداية
+    const TYPE_SPEED = 5; // كل ما الرقم يقل كل ما الكتابة اسرع - خليه 5 لسوبر سريع
+    const START_DELAY = 20; // تأخير البداية
 
     function typeChar() {
       if(i <= fullText.length) { 
